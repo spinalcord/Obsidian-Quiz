@@ -212,23 +212,7 @@ export default class QuizPlugin extends Plugin {
                 continue;
             }
             
-            if (line.toLowerCase().startsWith('-- reason')) {
-                // Extract reason text
-                const reasonText = line.substring('-- Reason'.length).trim();
-                
-                // If the reason is on the same line
-                if (reasonText) {
-                    quiz.reason = reasonText;
-                } else {
-                    // Process reason on the next line
-                    if (i + 1 < lines.length) {
-                        quiz.reason = lines[i + 1].trim();
-                        i++; // Skip the next line as we've already processed it
-                    }
-                }
-                continue;
-            }
-            
+ 
 
             // If we have a current option, add text to the option
             if (currentOption) {

@@ -1101,6 +1101,26 @@ renderFillBlank(quizEl: HTMLElement, quiz: QuizQuestion): void {
                 color: var(--text-normal);
             }
             
+            /* Reason styling */
+            .quiz-reason {
+                margin-top: 10px;
+                padding: 10px;
+                border-left: 3px solid var(--interactive-accent);
+                background-color: var(--background-primary-alt);
+                border-radius: 0 4px 4px 0;
+            }
+            
+            .quiz-reason-title {
+                font-weight: bold;
+                margin-bottom: 5px;
+                color: var(--text-normal);
+            }
+            
+            .quiz-reason-text {
+                color: var(--text-normal);
+                white-space: pre-wrap;
+            }
+            
             /* Text input styling */
             .quiz-text-input {
                 margin-bottom: 15px;

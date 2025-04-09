@@ -38,57 +38,57 @@ Create quizzes in your notes by using the `quiz` code block:
 ### Multiple Choice Quiz
 
 \`\`\`quiz
--- Type mc
--- Question What is the capital of France?
--- A Paris
--- B London 
--- C Berlin
--- D Madrid
--- Answer A
+-- Type mc  
+-- Question What is the capital of France?  
+-- A Paris  
+-- B London   
+-- C Berlin  
+-- D Madrid  
+-- Answer A  
 \`\`\`
 
 ### True/False Quiz
 
 \`\`\`quiz
--- Type tf
--- Question The Earth is flat.
--- Answer false
+-- Type tf  
+-- Question The Earth is flat.  
+-- Answer false  
 \`\`\`
 
 ### Text Input Quiz
 
 \`\`\`quiz
--- Type text
--- Question What is the largest planet in our solar system?
--- Answer Jupiter
+-- Type text  
+-- Question What is the largest planet in our solar system?  
+-- Answer Jupiter  
 \`\`\`
 
 ### Fill-in-the-Blank Quiz
 
 \`\`\`quiz
--- Type fillblank
--- Question The [blank] is the closest star to Earth.
--- Answer Sun
+-- Type fillblank  
+-- Question The [blank] is the closest star to Earth.  
+-- Answer Sun  
 \`\`\`
 
 Multiple blanks:
 
 \`\`\`quiz
--- Type fb
--- Question [blank] is the capital of [blank].
--- Answer Paris, France
+-- Type fb  
+-- Question [blank] is the capital of [blank].  
+-- Answer Paris, France  
 \`\`\`
 
 ### Sorting Quiz
 
 \`\`\`quiz
--- Type sort
--- Question Sort these planets by size (largest to smallest):
--- A Jupiter
--- B Saturn
--- C Neptune
--- D Earth
--- Answer A, B, C, D
+-- Type sort  
+-- Question Sort these planets by size (largest to smallest):  
+-- A Jupiter  
+-- B Saturn  
+-- C Neptune  
+-- D Earth  
+-- Answer A, B, C, D  
 \`\`\`
 
 ## Alternative Syntax
@@ -96,11 +96,11 @@ Multiple blanks:
 You can also use a simpler alternative syntax:
 
 \`\`\`quiz
--- Type mc
-What is the capital of France?
--- A Paris
--- B London 
--- C Berlin
--- D Madrid
--- Answer A
+-- Type mc  
+What is the capital of France?  
+-- A Paris  
+-- B London   
+-- C Berlin  
+-- D Madrid  
+-- Answer A  
 \`\`\`

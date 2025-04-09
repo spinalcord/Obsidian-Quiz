@@ -90,17 +90,3 @@ Multiple blanks:
 -- D Earth  
 -- Answer A, B, C, D  
 \`\`\`
-
-## Alternative Syntax
-
-You can also use a simpler alternative syntax:
-
-\`\`\`quiz  
--- Type mc  
-What is the capital of France?  
--- A Paris  
--- B London   
--- C Berlin  
--- D Madrid  
--- Answer A  
-\`\`\`

@@ -11,6 +11,7 @@ interface QuizQuestion {
     options: QuizOption[]; // Options for MC and sorting questions
     answers: string[];     // Correct answers
     blanks?: number;       // Number of blanks for fillblank type
+    reason?: string;       // Optional explanation for the correct answer
 }
 
 export default class QuizPlugin extends Plugin {
@@ -211,6 +212,24 @@ export default class QuizPlugin extends Plugin {
                 continue;
             }
             
+            if (line.toLowerCase().startsWith('-- reason')) {
+                // Extract reason text
+                const reasonText = line.substring('-- Reason'.length).trim();
+                
+                // If the reason is on the same line
+                if (reasonText) {
+                    quiz.reason = reasonText;
+                } else {
+                    // Process reason on the next line
+                    if (i + 1 < lines.length) {
+                        quiz.reason = lines[i + 1].trim();
+                        i++; // Skip the next line as we've already processed it
+                    }
+                }
+                continue;
+            }
+            
+
             // If we have a current option, add text to the option
             if (currentOption) {
                 if (currentOption.text) {
@@ -368,11 +387,11 @@ export default class QuizPlugin extends Plugin {
             resultEl.empty();
             
             if (isCorrect) {
-                resultEl.setText('✅');
+                resultEl.setText('✅' + (quiz.reason ? ': ' + quiz.reason : ''));
                 resultEl.addClass('quiz-correct');
                 resultEl.removeClass('quiz-incorrect');
             } else {
-                resultEl.setText(`❌: ${quiz.answers.join(', ')}`);
+                resultEl.setText(`❌: ${quiz.answers.join(', ')}` + (quiz.reason ? ` (${quiz.reason})` : ''));
                 resultEl.addClass('quiz-incorrect');
                 resultEl.removeClass('quiz-correct');
             }
@@ -387,7 +406,7 @@ export default class QuizPlugin extends Plugin {
             type: 'text',
             cls: 'quiz-text-field',
             attr: {
-                placeholder: 'Deine Antwort...'
+                placeholder: 'Your Answer...'
             }
         });
         
@@ -416,11 +435,11 @@ export default class QuizPlugin extends Plugin {
             resultEl.empty();
             
             if (isCorrect) {
-                resultEl.setText('✅');
+                resultEl.setText('✅' + (quiz.reason ? ': ' + quiz.reason : ''));
                 resultEl.addClass('quiz-correct');
                 resultEl.removeClass('quiz-incorrect');
             } else {
-                resultEl.setText(`❌: ${quiz.answers.join(' oder ')}`);
+                resultEl.setText(`❌: ${quiz.answers.join(' oder ')}` + (quiz.reason ? ` (${quiz.reason})` : ''));
                 resultEl.addClass('quiz-incorrect');
                 resultEl.removeClass('quiz-correct');
             }
@@ -495,11 +514,11 @@ export default class QuizPlugin extends Plugin {
             resultEl.empty();
             
             if (isCorrect) {
-                resultEl.setText('✅');
+                resultEl.setText('✅' + (quiz.reason ? ': ' + quiz.reason : ''));
                 resultEl.addClass('quiz-correct');
                 resultEl.removeClass('quiz-incorrect');
             } else {
-                resultEl.setText(`❌: ${correctAnswer === 'true' ? 'Wahr' : 'Falsch'}`);
+                resultEl.setText(`❌: ${correctAnswer === 'true' ? 'Wahr' : 'Falsch'}` + (quiz.reason ? ` (${quiz.reason})` : ''));
                 resultEl.addClass('quiz-incorrect');
                 resultEl.removeClass('quiz-correct');
             }

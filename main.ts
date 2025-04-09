@@ -338,7 +338,7 @@ export default class QuizPlugin extends Plugin {
         
         // Create submit button
         const submitBtn = quizEl.createEl('button', {
-            text: 'Überprüfen',
+            text: 'Check',
             cls: 'quiz-submit-btn',
             type: 'button'
         });
@@ -393,7 +393,7 @@ export default class QuizPlugin extends Plugin {
         
         // Create submit button
         const submitBtn = quizEl.createEl('button', {
-            text: 'Überprüfen',
+            text: 'Check',
             cls: 'quiz-submit-btn',
             type: 'button'
         });
@@ -466,7 +466,7 @@ export default class QuizPlugin extends Plugin {
         
         // Create submit button
         const submitBtn = quizEl.createEl('button', {
-            text: 'Überprüfen',
+            text: 'Check',
             cls: 'quiz-submit-btn',
             type: 'button'
         });
@@ -714,7 +714,7 @@ renderFillBlank(quizEl: HTMLElement, quiz: QuizQuestion): void {
     
     // Create submit button
     const submitBtn = mainContainer.createEl('button', {
-        text: 'Überprüfen',
+        text: 'Check',
         cls: 'quiz-submit-btn',
         type: 'button'
     });
@@ -848,7 +848,7 @@ renderFillBlank(quizEl: HTMLElement, quiz: QuizQuestion): void {
         
         // Create submit button
         const submitBtn = quizEl.createEl('button', {
-            text: 'Überprüfen',
+            text: 'Check',
             cls: 'quiz-submit-btn',
             type: 'button'
         });

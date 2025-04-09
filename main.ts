@@ -76,11 +76,12 @@ export default class QuizPlugin extends Plugin {
             options: [],
             answers: []
         };
-
+    
         let currentOption: QuizOption | null = null;
         let processingAnswer = false;
         let processingQuestion = false;
-
+        let processingReason = false;
+    
         for (let i = 0; i < lines.length; i++) {
             const line = lines[i].trim();
             
@@ -94,6 +95,7 @@ export default class QuizPlugin extends Plugin {
                     quiz.type = typeValue;
                     processingQuestion = false;
                     processingAnswer = false;
+                    processingReason = false;
                     currentOption = null;
                 }
                 continue;
@@ -103,6 +105,7 @@ export default class QuizPlugin extends Plugin {
             if (line.startsWith('-- Question')) {
                 processingQuestion = true;
                 processingAnswer = false;
+                processingReason = false;
                 currentOption = null;
                 
                 // Check if question is on the same line
@@ -112,6 +115,36 @@ export default class QuizPlugin extends Plugin {
                     processingQuestion = false;
                 }
                 continue;
+            }
+            
+            // Check for reason line
+            if (line.startsWith('-- Reason')) {
+                processingReason = true;
+                processingQuestion = false;
+                processingAnswer = false;
+                currentOption = null;
+                
+                // Check if reason is on the same line
+                const reasonText = line.substring('-- Reason'.length).trim();
+                if (reasonText) {
+                    quiz.reason = reasonText;
+                    processingReason = false;
+                }
+                continue;
+            }
+            
+            // Process reason text if we're in reason mode
+            if (processingReason) {
+                if (line.startsWith('-- ')) {
+                    processingReason = false;
+                } else {
+                    if (quiz.reason) {
+                        quiz.reason += '\n' + line;
+                    } else {
+                        quiz.reason = line;
+                    }
+                    continue;
+                }
             }
             
             // Process question text if we're in question mode
@@ -212,8 +245,6 @@ export default class QuizPlugin extends Plugin {
                 continue;
             }
             
- 
-
             // If we have a current option, add text to the option
             if (currentOption) {
                 if (currentOption.text) {
@@ -230,7 +261,7 @@ export default class QuizPlugin extends Plugin {
                 quiz.question = line;
             }
         }
-
+    
         // For alternative syntax without explicit type but with A, B, C options,
         // default to multiple choice
         if (quiz.type === 'mc' && quiz.options.length > 0 && quiz.question === '') {
@@ -349,6 +380,10 @@ export default class QuizPlugin extends Plugin {
         // Create result element
         const resultEl = quizEl.createDiv({ cls: 'quiz-result' });
         
+        // Create reason element (initially hidden)
+        const reasonEl = quizEl.createDiv({ cls: 'quiz-reason' });
+        reasonEl.style.display = 'none';
+        
         // Add event listener for submit button
         submitBtn.addEventListener('click', (e) => {
             // Prevent default button behavior
@@ -371,17 +406,25 @@ export default class QuizPlugin extends Plugin {
             resultEl.empty();
             
             if (isCorrect) {
-                resultEl.setText('✅' + (quiz.reason ? ': ' + quiz.reason : ''));
+                resultEl.setText('✅');
                 resultEl.addClass('quiz-correct');
                 resultEl.removeClass('quiz-incorrect');
             } else {
-                resultEl.setText(`❌: ${quiz.answers.join(', ')}` + (quiz.reason ? ` (${quiz.reason})` : ''));
+                resultEl.setText(`❌: ${quiz.answers.join(', ')}`);
                 resultEl.addClass('quiz-incorrect');
                 resultEl.removeClass('quiz-correct');
             }
+            
+            // Show reason if available
+            if (quiz.reason) {
+                reasonEl.empty();
+                reasonEl.createDiv({ cls: 'quiz-reason-title', text: 'Reason:' });
+                reasonEl.createDiv({ cls: 'quiz-reason-text', text: quiz.reason });
+                reasonEl.style.display = 'block';
+            }
         });
     }
-
+    
     renderTextInput(quizEl: HTMLElement, quiz: QuizQuestion): void {
         // Create input field
         const inputContainer = quizEl.createDiv({ cls: 'quiz-text-input' });
@@ -404,6 +447,10 @@ export default class QuizPlugin extends Plugin {
         // Create result element
         const resultEl = quizEl.createDiv({ cls: 'quiz-result' });
         
+        // Create reason element (initially hidden)
+        const reasonEl = quizEl.createDiv({ cls: 'quiz-reason' });
+        reasonEl.style.display = 'none';
+        
         // Add event listener for submit button
         submitBtn.addEventListener('click', (e) => {
             e.preventDefault();
@@ -419,13 +466,21 @@ export default class QuizPlugin extends Plugin {
             resultEl.empty();
             
             if (isCorrect) {
-                resultEl.setText('✅' + (quiz.reason ? ': ' + quiz.reason : ''));
+                resultEl.setText('✅');
                 resultEl.addClass('quiz-correct');
                 resultEl.removeClass('quiz-incorrect');
             } else {
-                resultEl.setText(`❌: ${quiz.answers.join(' oder ')}` + (quiz.reason ? ` (${quiz.reason})` : ''));
+                resultEl.setText(`❌: ${quiz.answers.join(' oder ')}`);
                 resultEl.addClass('quiz-incorrect');
                 resultEl.removeClass('quiz-correct');
+            }
+            
+            // Show reason if available
+            if (quiz.reason) {
+                reasonEl.empty();
+                reasonEl.createDiv({ cls: 'quiz-reason-title', text: 'Erklärung:' });
+                reasonEl.createDiv({ cls: 'quiz-reason-text', text: quiz.reason });
+                reasonEl.style.display = 'block';
             }
         });
     }
@@ -477,6 +532,10 @@ export default class QuizPlugin extends Plugin {
         // Create result element
         const resultEl = quizEl.createDiv({ cls: 'quiz-result' });
         
+        // Create reason element (initially hidden)
+        const reasonEl = quizEl.createDiv({ cls: 'quiz-reason' });
+        reasonEl.style.display = 'none';
+        
         // Add event listener for submit button
         submitBtn.addEventListener('click', (e) => {
             e.preventDefault();
@@ -498,13 +557,21 @@ export default class QuizPlugin extends Plugin {
             resultEl.empty();
             
             if (isCorrect) {
-                resultEl.setText('✅' + (quiz.reason ? ': ' + quiz.reason : ''));
+                resultEl.setText('✅');
                 resultEl.addClass('quiz-correct');
                 resultEl.removeClass('quiz-incorrect');
             } else {
-                resultEl.setText(`❌: ${correctAnswer === 'true' ? 'Wahr' : 'Falsch'}` + (quiz.reason ? ` (${quiz.reason})` : ''));
+                resultEl.setText(`❌: ${correctAnswer === 'true' ? 'Wahr' : 'Falsch'}`);
                 resultEl.addClass('quiz-incorrect');
                 resultEl.removeClass('quiz-correct');
+            }
+            
+            // Show reason if available
+            if (quiz.reason) {
+                reasonEl.empty();
+                reasonEl.createDiv({ cls: 'quiz-reason-title', text: 'Erklärung:' });
+                reasonEl.createDiv({ cls: 'quiz-reason-text', text: quiz.reason });
+                reasonEl.style.display = 'block';
             }
         });
     }
@@ -725,6 +792,10 @@ renderFillBlank(quizEl: HTMLElement, quiz: QuizQuestion): void {
     // Create result element
     const resultEl = mainContainer.createDiv({ cls: 'quiz-result' });
     
+   // Create reason element (initially hidden)
+   const reasonEl = mainContainer.createDiv({ cls: 'quiz-reason' });
+   reasonEl.style.display = 'none';
+
     // Add event listener for submit button
     submitBtn.addEventListener('click', (e) => {
         e.preventDefault();
@@ -779,6 +850,14 @@ renderFillBlank(quizEl: HTMLElement, quiz: QuizQuestion): void {
             resultEl.setText(`❌: ${quiz.answers.join(', ')}`);
             resultEl.addClass('quiz-incorrect');
             resultEl.removeClass('quiz-correct');
+        }
+        
+        // Show reason if available
+        if (quiz.reason) {
+            reasonEl.empty();
+            reasonEl.createDiv({ cls: 'quiz-reason-title', text: 'Erklärung:' });
+            reasonEl.createDiv({ cls: 'quiz-reason-text', text: quiz.reason });
+            reasonEl.style.display = 'block';
         }
     });
 }
@@ -859,6 +938,10 @@ renderFillBlank(quizEl: HTMLElement, quiz: QuizQuestion): void {
         // Create result element
         const resultEl = quizEl.createDiv({ cls: 'quiz-result' });
         
+        const reasonEl = quizEl.createDiv({ cls: 'quiz-reason' });
+        reasonEl.style.display = 'none';
+        
+
         // Add event listener for submit button
         submitBtn.addEventListener('click', (e) => {
             e.preventDefault();
@@ -892,6 +975,14 @@ renderFillBlank(quizEl: HTMLElement, quiz: QuizQuestion): void {
                 resultEl.setText(`❌: ${correctTexts.join(' → ')}`);
                 resultEl.addClass('quiz-incorrect');
                 resultEl.removeClass('quiz-correct');
+            }
+            
+            // Show reason if available
+            if (quiz.reason) {
+                reasonEl.empty();
+                reasonEl.createDiv({ cls: 'quiz-reason-title', text: 'Erklärung:' });
+                reasonEl.createDiv({ cls: 'quiz-reason-text', text: quiz.reason });
+                reasonEl.style.display = 'block';
             }
         });
     }

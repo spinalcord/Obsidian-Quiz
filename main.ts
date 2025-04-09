@@ -368,11 +368,11 @@ export default class QuizPlugin extends Plugin {
             resultEl.empty();
             
             if (isCorrect) {
-                resultEl.setText('Richtig! 🎉');
+                resultEl.setText('✅');
                 resultEl.addClass('quiz-correct');
                 resultEl.removeClass('quiz-incorrect');
             } else {
-                resultEl.setText(`Falsch. Die richtige Antwort ist: ${quiz.answers.join(', ')}`);
+                resultEl.setText(`❌: ${quiz.answers.join(', ')}`);
                 resultEl.addClass('quiz-incorrect');
                 resultEl.removeClass('quiz-correct');
             }
@@ -416,11 +416,11 @@ export default class QuizPlugin extends Plugin {
             resultEl.empty();
             
             if (isCorrect) {
-                resultEl.setText('Richtig! 🎉');
+                resultEl.setText('✅');
                 resultEl.addClass('quiz-correct');
                 resultEl.removeClass('quiz-incorrect');
             } else {
-                resultEl.setText(`Falsch. Die richtige Antwort ist: ${quiz.answers.join(' oder ')}`);
+                resultEl.setText(`❌: ${quiz.answers.join(' oder ')}`);
                 resultEl.addClass('quiz-incorrect');
                 resultEl.removeClass('quiz-correct');
             }
@@ -495,11 +495,11 @@ export default class QuizPlugin extends Plugin {
             resultEl.empty();
             
             if (isCorrect) {
-                resultEl.setText('Richtig! 🎉');
+                resultEl.setText('✅');
                 resultEl.addClass('quiz-correct');
                 resultEl.removeClass('quiz-incorrect');
             } else {
-                resultEl.setText(`Falsch. Die richtige Antwort ist: ${correctAnswer === 'true' ? 'Wahr' : 'Falsch'}`);
+                resultEl.setText(`❌: ${correctAnswer === 'true' ? 'Wahr' : 'Falsch'}`);
                 resultEl.addClass('quiz-incorrect');
                 resultEl.removeClass('quiz-correct');
             }
@@ -683,7 +683,7 @@ renderFillBlank(quizEl: HTMLElement, quiz: QuizQuestion): void {
     
     // Create reset button to clear all dropzones
     const resetBtn = mainContainer.createEl('button', {
-        text: 'Zurücksetzen',
+        text: '🔥',
         cls: 'quiz-reset-btn',
         type: 'button'
     });
@@ -741,7 +741,7 @@ renderFillBlank(quizEl: HTMLElement, quiz: QuizQuestion): void {
         
         // Make sure all dropzones have been filled
         if (userAnswers.some(a => a === '')) {
-            resultEl.setText('Bitte fülle alle Lücken aus.');
+            resultEl.setText('Fill all gaps');
             resultEl.removeClass('quiz-correct quiz-incorrect');
             return;
         }
@@ -769,11 +769,11 @@ renderFillBlank(quizEl: HTMLElement, quiz: QuizQuestion): void {
         resultEl.empty();
         
         if (allCorrect) {
-            resultEl.setText('Richtig! 🎉');
+            resultEl.setText('✅');
             resultEl.addClass('quiz-correct');
             resultEl.removeClass('quiz-incorrect');
         } else {
-            resultEl.setText(`Falsch. Die richtigen Antworten sind: ${quiz.answers.join(', ')}`);
+            resultEl.setText(`❌: ${quiz.answers.join(', ')}`);
             resultEl.addClass('quiz-incorrect');
             resultEl.removeClass('quiz-correct');
         }
@@ -876,7 +876,7 @@ renderFillBlank(quizEl: HTMLElement, quiz: QuizQuestion): void {
             resultEl.empty();
             
             if (isCorrect) {
-                resultEl.setText('Richtig! 🎉');
+                resultEl.setText('✅');
                 resultEl.addClass('quiz-correct');
                 resultEl.removeClass('quiz-incorrect');
             } else {
@@ -886,7 +886,7 @@ renderFillBlank(quizEl: HTMLElement, quiz: QuizQuestion): void {
                     return option ? `${option.text}` : id;
                 });
                 
-                resultEl.setText(`Falsch. Die richtige Reihenfolge ist: ${correctTexts.join(' → ')}`);
+                resultEl.setText(`❌: ${correctTexts.join(' → ')}`);
                 resultEl.addClass('quiz-incorrect');
                 resultEl.removeClass('quiz-correct');
             }

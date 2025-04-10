@@ -1,5 +1,5 @@
 # Obsidian Enhanced Quiz Plugin
-
+ 
 An interactive quiz plugin for Obsidian that allows you to create various types of quizzes directly in your notes. Test your knowledge with multiple choice, true/false, text input, fill-in-the-blank, and sorting quizzes.
 
 ![Obsidian Quiz Plugin Screenshot](https://github.com/spinalcord/Obsidian-Quiz/blob/master/images/example1.png?raw=true)

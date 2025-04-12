@@ -13,6 +13,14 @@ interface QuizQuestion {
     blanks?: number;       // Number of blanks for fillblank type
     reason?: string;       // Optional explanation for the correct answer
 }
+// Helper function to split by commas, respecting backslash escapes
+function splitEscapedComma(text: string): string[] {
+    // Split by commas that are not preceded by a backslash (negative lookbehind)
+    const segments = text.split(/(?<!\\),/g);
+    // Trim whitespace and replace escaped commas (\\,) with a literal comma (,)
+    return segments.map(segment => segment.trim().replace(/\\,/g, ','));
+}
+
 
 export default class QuizPlugin extends Plugin {
     async onload() {
@@ -180,8 +188,8 @@ export default class QuizPlugin extends Plugin {
                             if (blankCount <= 1) {
                                 quiz.answers = [answersText];
                             } else {
-                                // Split by comma for multiple blanks
-                                quiz.answers = answersText.split(',').map(a => a.trim());
+                                // Split by comma for multiple blanks, respecting escapes
+                                quiz.answers = splitEscapedComma(answersText);
                             }
                         } else if (quiz.type === 'truefalse' || quiz.type === 'tf') {
                             // Ensure the answer is properly formatted for true/false questions
@@ -192,7 +200,7 @@ export default class QuizPlugin extends Plugin {
                                 quiz.answers = [answer === 'wahr' ? 'true' : 'false']; // Handle German
                             }
                         } else {
-                            quiz.answers = answersText.split(',').map(a => a.trim());
+                            quiz.answers = splitEscapedComma(answersText);
                         }
                     } else {
                         // If answer is on the next line, set flag to process it
@@ -227,8 +235,8 @@ export default class QuizPlugin extends Plugin {
                     if (blankCount <= 1) {
                         quiz.answers = [line];
                     } else {
-                        // Split by comma for multiple blanks
-                        quiz.answers = line.split(',').map(a => a.trim());
+                        // Split by comma for multiple blanks, respecting escapes
+                        quiz.answers = splitEscapedComma(line);
                     }
                 } else if (quiz.type === 'truefalse' || quiz.type === 'tf') {
                     // Ensure the answer is properly formatted for true/false questions
@@ -239,7 +247,7 @@ export default class QuizPlugin extends Plugin {
                         quiz.answers = [answer === 'wahr' ? 'true' : 'false']; // Handle German
                     }
                 } else {
-                    quiz.answers = line.split(',').map(a => a.trim());
+                    quiz.answers = splitEscapedComma(line);
                 }
                 processingAnswer = false;
                 continue;

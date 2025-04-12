@@ -1,0 +1,49 @@
+--- original.ts	2024-07-23 10:00:00.000000000 +0000
++++ modified.ts	2024-07-23 10:05:00.000000000 +0000
+@@ -35,6 +35,7 @@
+ 
+ export default class QuizPlugin extends Plugin {
+     async onload() {
++        console.log(`Loading Enhanced Quiz Plugin v${this.manifest.version}`);
+         console.log('Loading Enhanced Quiz Plugin');
+         
+         // Register the quiz code block processor
+@@ -176,7 +177,7 @@
+                                 quiz.answers = [answer === 'wahr' ? 'true' : 'false']; // Handle German
+                             }
+                         } else {
+-                            quiz.answers = answersText.split(',').map(a => a.trim());
++                            quiz.answers = this.splitEscapedComma(answersText);
+                         }
+                     } else {
+                         // If answer is on the next line, set flag to process it
+@@ -220,7 +221,7 @@
+                         quiz.answers = [answer === 'wahr' ? 'true' : 'false']; // Handle German
+                     }
+                 } else {
+-                    quiz.answers = line.split(',').map(a => a.trim());
++                    quiz.answers = this.splitEscapedComma(line);
+                 }
+                 processingAnswer = false;
+                 continue;
+@@ -280,6 +281,19 @@
+         
+         return quiz;
+     }
++    
++    /**
++     * Splits a string by commas, but ignores commas preceded by a backslash.
++     * Removes the escape backslash from the final parts.
++     */
++    splitEscapedComma(text: string): string[] {
++        const placeholder = '___PLACEHOLDER_COMMA___' + Date.now(); // Unique placeholder
++        // Replace escaped commas with the placeholder
++        const replacedText = text.replace(/\\,/g, placeholder);
++        // Split by the regular comma
++        const parts = replacedText.split(',');
++        // Restore the placeholder to a comma and trim
++        return parts.map(part => part.replace(new RegExp(placeholder.replace(/[-\/\\^$*+?.()|[\]{}]/g, '\\$&'), 'g'), ',').trim());
++    }
+ 
+     renderQuiz(container: HTMLElement, quiz: QuizQuestion): void {
+         const quizEl = container.createDiv({ cls: 'quiz-form' });
